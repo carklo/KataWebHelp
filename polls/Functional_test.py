@@ -7,8 +7,8 @@ class FunctionalTest (TestCase):
 
 
     def setUp(self):
-        self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
-        #self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
+        #self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
+        self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
         self.browser.implicitly_wait(2)
         self.browser._is_remote = False
 
@@ -68,3 +68,22 @@ class FunctionalTest (TestCase):
         h2 = self.browser.find_element(By.XPATH, '//h2[text()="Juan Daniel Arevalo"]')
 
         self.assertIn('Juan Daniel Arevalo', h2.text)
+
+    def test_login(self):
+        self.browser.get('http://localhost:8000')
+        link = self.browser.find_element_by_id('id_login')
+        link.click()
+        sleep(0.3)
+
+        nombreUsuario = self.browser.find_element_by_id('id_username')
+        nombreUsuario.send_keys('juan645')
+
+        clave = self.browser.find_element_by_id('id_password')
+        clave.send_keys('clave123')
+
+        botonLogin = self.browser.find_element_by_id('id_log')
+        botonLogin.click()
+        self.browser.implicitly_wait(3)
+        span = self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel Arevalo"]')
+
+        self.assertIn('Juan Daniel Arevalo', span.text)
