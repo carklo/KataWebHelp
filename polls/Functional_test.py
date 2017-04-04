@@ -7,8 +7,8 @@ class FunctionalTest (TestCase):
 
 
     def setUp(self):
-        #self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
-        self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
+        self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
+        #self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
         self.browser.implicitly_wait(2)
         self.browser._is_remote = False
 
