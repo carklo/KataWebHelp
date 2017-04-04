@@ -1,4 +1,5 @@
-from unittest import TestCase
+from time import sleep
+from unittest import TestCase, skip
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -6,20 +7,24 @@ class FunctionalTest (TestCase):
 
 
     def setUp(self):
-        # self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
-        self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
+        self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
+        #self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
+        self.browser.implicitly_wait(2)
+        self.browser._is_remote = False
 
     def tearDown(self):
         self.browser.quit()
 
     def test_title(self):
-        self.browser.get('http://localhost:8000/')
+        self.browser.get('http://localhost:8000')
         self.assertIn('Busco Ayuda', self.browser.title)
+
 
     def test_registro(self):
         self.browser.get('http://localhost:8000')
         link = self.browser.find_element_by_id('id_register')
         link.click()
+        sleep(0.3)
 
         nombre = self.browser.find_element_by_id('id_nombre')
         nombre.send_keys('Juan Daniel')
@@ -31,7 +36,7 @@ class FunctionalTest (TestCase):
         experiencia.send_keys('5')
 
         self.browser.find_element_by_xpath(
-            "//select[@id='id_tiposDeServicio']/option[text()='Desarrollador Web']").click()
+            "//select[@id='id_tiposDeServicio']/option[text()='Lavanderia']").click()
         telefono = self.browser.find_element_by_id('id_telefono')
         telefono.send_keys('3173024578')
 
@@ -39,7 +44,7 @@ class FunctionalTest (TestCase):
         correo.send_keys('jd.patino1@uniandes.edu.co')
 
         imagen = self.browser.find_element_by_id('id_imagen')
-        imagen.send_keys('C:\Users\asistente\Desktop\developer.jpg')
+        imagen.send_keys(r'C:\Users\santi\Downloads\bacteria.jpg')
 
         nombreUsuario = self.browser.find_element_by_id('id_username')
         nombreUsuario.send_keys('juan645')
