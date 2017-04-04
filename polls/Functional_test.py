@@ -7,19 +7,20 @@ class FunctionalTest (TestCase):
 
 
     def setUp(self):
-        self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
-        #self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
+        #self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
+        self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
         self.browser.implicitly_wait(2)
         self.browser._is_remote = False
 
     def tearDown(self):
         self.browser.quit()
 
+    @skip('')
     def test_title(self):
         self.browser.get('http://localhost:8000')
         self.assertIn('Busco Ayuda', self.browser.title)
 
-
+    @skip('')
     def test_registro(self):
         self.browser.get('http://localhost:8000')
         link = self.browser.find_element_by_id('id_register')
@@ -58,3 +59,12 @@ class FunctionalTest (TestCase):
         span = self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel Arevalo"]')
 
         self.assertIn('Juan Daniel Arevalo', span.text)
+
+    def test_verDetalle(self):
+        self.browser.get('http://localhost:8000')
+        span = self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel Arevalo"]')
+        span.click()
+
+        h2 = self.browser.find_element(By.XPATH, '//h2[text()="Juan Daniel Arevalo"]')
+
+        self.assertIn('Juan Daniel Arevalo', h2.text)

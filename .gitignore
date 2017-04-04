@@ -1,3 +1,4 @@
 .idea/
 *.pyc
 *.log
+polls/migrations/0001_initial.py
