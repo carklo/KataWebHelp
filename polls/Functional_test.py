@@ -96,3 +96,37 @@ class FunctionalTest (TestCase):
         span = self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel Arevalo"]')
 
         self.assertIn('Juan Daniel Arevalo', span.text)
+
+    def test_edicion_independiente(self):
+
+        self.browser.get('http://localhost:8000')
+        link = self.browser.find_element_by_id('id_editar')
+        link.click()
+        sleep(0.3)
+
+        nombre = self.browser.find_element_by_id('id_nombre')
+        nombre.send_keys('David')
+
+        apellidos = self.browser.find_element_by_id('id_apellidos')
+        apellidos.send_keys('Rodriguez')
+
+        experiencia = self.browser.find_element_by_id('id_aniosExperiencia')
+        experiencia.send_keys('5')
+
+        self.browser.find_element_by_xpath(
+            "//select[@id='id_tiposDeServicio']/option[text()='Lavanderia']").click()
+        telefono = self.browser.find_element_by_id('id_telefono')
+        telefono.send_keys('1234567')
+
+        correo = self.browser.find_element_by_id('id_correo')
+        correo.send_keys('jd.patino1@uniandes.edu.co')
+
+        imagen = self.browser.find_element_by_id('id_imagen')
+        imagen.send_keys(r'C:\Users\santi\Downloads\bacteria.jpg')
+
+        botonEdicion = self.browser.find_element_by_id('id_grabar')
+        botonEdicion.click()
+        self.browser.implicitly_wait(3)
+        span = self.browser.find_element(By.XPATH, '//span[text()="David Rodriguez"]')
+
+        self.assertIn('David Rodriguez', span.text)
