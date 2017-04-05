@@ -30,7 +30,7 @@
 <ul class="nav navbar-nav navbar-right" style="padding-right: 20px">
     {% if user.is_authenticated %}
 
-            <li><a href="{% url 'principal:editar' idTrabajador=user.id %}" id="id_editar"><span class="glyphicon glyphicon-user"></span> Editar</a></li>
+            <li><a href="{% url 'polls:editar' idTrabajador=user.id %}" id="id_editar"><span class="glyphicon glyphicon-user"></span> Editar</a></li>
     <li>
             <a href="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
         </li>
@@ -97,6 +97,7 @@
     </div>
 {% endif %}
 {% include "polls/registro.html" %}
+{% include "polls/login.html" %}
 <!--suppress JSUnresolvedFunction -->
 <script>
     $(document).ready(function () {

@@ -2,6 +2,7 @@
 import datetime
 
 import boto
+import sys
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import serializers
@@ -27,12 +28,14 @@ def index(request):
 
 
 def login(request):
-    username = request.POST.get('usrname', '')
-    password = request.POST.get('psw', '')
+    print >> sys.stdout, 'test ' + request.POST.get('username')
+    print >> sys.stdout, 'test ' + request.POST.get('password')
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
     user = auth.authenticate(username=username, password=password)
     if user is not None:
         auth.login(request, user)
-        messages.success(request, "Bienvenido al sistema {}".format(username), extra_tags="alert-success")
+        messages.success(request, user.first_name+" "+user.last_name, extra_tags="alert-success")
         return HttpResponseRedirect('/')
     else:
         messages.error(request, "¡El usuario o la contraseña son incorrectos!", extra_tags="alert-danger")
@@ -47,6 +50,7 @@ def logout(request):
 
 def register(request):
     if request.method == 'POST':
+
         username = request.POST.get('username')
         password = request.POST.get('password')
 

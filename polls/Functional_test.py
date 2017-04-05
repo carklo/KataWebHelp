@@ -1,14 +1,17 @@
+from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 from unittest import TestCase, skip
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+
 
 class FunctionalTest (TestCase):
 
 
     def setUp(self):
-        #self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
-        self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
+        self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
+        #self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
         self.browser.implicitly_wait(2)
         self.browser._is_remote = False
 
@@ -60,6 +63,7 @@ class FunctionalTest (TestCase):
 
         self.assertIn('Juan Daniel Arevalo', span.text)
 
+    @skip('')
     def test_verDetalle(self):
         self.browser.get('http://localhost:8000')
         span = self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel Arevalo"]')
@@ -73,17 +77,22 @@ class FunctionalTest (TestCase):
         self.browser.get('http://localhost:8000')
         link = self.browser.find_element_by_id('id_login')
         link.click()
-        sleep(0.3)
 
-        nombreUsuario = self.browser.find_element_by_id('id_username')
-        nombreUsuario.send_keys('juan645')
+        wait = WebDriverWait(self.browser, 5)
 
-        clave = self.browser.find_element_by_id('id_password')
+        user = wait.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#login-form > div:nth-child(2) > div:nth-child(1) > input:nth-child(2)")))
+        user.clear()
+        user.send_keys('juan645')
+
+        clave = wait.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#login-form > div:nth-child(2) > div:nth-child(2) > input:nth-child(2)")))
+        clave.clear()
         clave.send_keys('clave123')
 
         botonLogin = self.browser.find_element_by_id('id_log')
         botonLogin.click()
-        self.browser.implicitly_wait(3)
+
         span = self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel Arevalo"]')
 
         self.assertIn('Juan Daniel Arevalo', span.text)
