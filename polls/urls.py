@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^mostrarTrabajadores/(?P<tipo>\w+)$', views.mostrarTrabajadores),
     url(r'^mostrarTrabajadores', views.mostrarTrabajadores),
     url(r'^tipoServicio/(?P<pk>\d+)$', views.getTiposDeServicio),
+    url(r'edicion/(?P<pk>\d+)$', views.ir_edicion, name='edicion'),
+    url(r'^id', views.id_trabajadorActual, name='id')
 ]

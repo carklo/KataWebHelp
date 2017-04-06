@@ -6,7 +6,7 @@ import sys
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Trabajador, TrabajadorForm, UserForm, Comentario
@@ -128,3 +128,11 @@ def detalle_trabajador(request):
 def detail(request, pk):
     trabajador = get_object_or_404(Trabajador, pk=pk)
     return HttpResponse(serializers.serialize("json", [trabajador]))
+
+def ir_edicion(request, pk):
+    return render(request, "polls/editar.html")
+
+@csrf_exempt
+def id_trabajadorActual(request):
+    id = request.user.id
+    return JsonResponse({'id':id})

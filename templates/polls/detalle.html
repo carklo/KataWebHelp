@@ -11,11 +11,15 @@
             crossorigin="anonymous"></script>
     <script src="/designMatch/recursos/jquery.bootpag.min.js"></script>
     <script>
-        var trabajador = localStorage.getItem('trabajador');
 
         (function () {
-            $.getJSON("/trabajador/" + trabajador).done(function (data) {
-                $.each(data, function (key, val) {
+            $.getJSON("/id").done(function (data) {
+                if (data)
+                {
+                    id = data.id;
+                    localStorage.setItem('trabajador',id)
+                    $.getJSON("/trabajador/"+id).done(function (data) {
+                    $.each(data, function (key, val) {
                     $('#nombres').prepend('<h2>' + val.fields.nombre + ' ' + val.fields.apellidos + '</h2>');
                     $('#foto').prepend('<a><img src="https://miso4202.s3.amazonaws.com/' + val.fields.imagen + '" class="media-object" style="width: 250px; height: 300px"></a>');
                     $('#detalle').prepend('<br><br><br>' +
@@ -24,12 +28,19 @@
                             '<h4><b>Correo electrónico: </b>' + val.fields.correo + '</h4>');
                 })
             });
+                }
+            })
+
         })();
 
         mostrarComentarios();
         function mostrarComentarios(){
-            $.getJSON("/mostrarComentarios/" + trabajador).done(function (data) {
-                $.each(data, function (key, val) {
+            $.getJSON("/id").done(function (data) {
+                if(data)
+                {
+                    $.getJSON("/mostrarComentarios/" + data.id).done(function (data)
+                    {
+                    $.each(data, function (key, val) {
 
                     var div='<div style="box-shadow: 2px 2px 5px gray; border-radius: 5px" class="col-md-6 col-md-offset-3">'+
                                   '<h4>'+val.fields.correo+'</h4>'+
@@ -37,6 +48,8 @@
                   $('#comentarios').append(div);
                 })
             });
+                }
+            })
         }
 
 

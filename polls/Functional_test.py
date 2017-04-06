@@ -73,6 +73,7 @@ class FunctionalTest (TestCase):
 
         self.assertIn('Juan Daniel Arevalo', h2.text)
 
+    @skip('')
     def test_login(self):
         self.browser.get('http://localhost:8000')
         link = self.browser.find_element_by_id('id_login')
@@ -100,33 +101,62 @@ class FunctionalTest (TestCase):
     def test_edicion_independiente(self):
 
         self.browser.get('http://localhost:8000')
-        link = self.browser.find_element_by_id('id_editar')
-        link.click()
-        sleep(0.3)
+        try:
+            link = self.browser.find_element_by_id('id_editar')
 
-        nombre = self.browser.find_element_by_id('id_nombre')
-        nombre.send_keys('David')
+        except:
+            link = self.browser.find_element_by_id('id_login')
+            link.click()
 
-        apellidos = self.browser.find_element_by_id('id_apellidos')
-        apellidos.send_keys('Rodriguez')
+            wait = WebDriverWait(self.browser, 5)
 
-        experiencia = self.browser.find_element_by_id('id_aniosExperiencia')
-        experiencia.send_keys('5')
+            user = wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, "#login-form > div:nth-child(2) > div:nth-child(1) > input:nth-child(2)")))
+            user.clear()
+            user.send_keys('juan645')
 
-        self.browser.find_element_by_xpath(
-            "//select[@id='id_tiposDeServicio']/option[text()='Lavanderia']").click()
-        telefono = self.browser.find_element_by_id('id_telefono')
-        telefono.send_keys('1234567')
+            clave = wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, "#login-form > div:nth-child(2) > div:nth-child(2) > input:nth-child(2)")))
+            clave.clear()
+            clave.send_keys('clave123')
 
-        correo = self.browser.find_element_by_id('id_correo')
-        correo.send_keys('jd.patino1@uniandes.edu.co')
+            botonLogin = self.browser.find_element_by_id('id_log')
+            botonLogin.click()
 
-        imagen = self.browser.find_element_by_id('id_imagen')
-        imagen.send_keys(r'C:\Users\santi\Downloads\bacteria.jpg')
+            sleep(5)
+            link = self.browser.find_element_by_id('id_editar')
+            link.click()
 
-        botonEdicion = self.browser.find_element_by_id('id_grabar')
-        botonEdicion.click()
-        self.browser.implicitly_wait(3)
-        span = self.browser.find_element(By.XPATH, '//span[text()="David Rodriguez"]')
+            nombre = wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, "#edit-form > div:nth-child(2) > div:nth-child(1) > input:nth-child(2)")))
+            nombre.clear()
+            nombre.send_keys('David')
 
-        self.assertIn('David Rodriguez', span.text)
+            apellidos = wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, "#edit-form > div:nth-child(2) > div:nth-child(2) > input:nth-child(2)")))
+            apellidos.clear()
+            apellidos.send_keys('Rodriguez')
+
+            experiencia = wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, "#edit-form > div:nth-child(2) > div:nth-child(3) > input:nth-child(2)")))
+            experiencia.clear()
+            experiencia.send_keys('10')
+
+            telefono = wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, "#edit-form > div:nth-child(2) > div:nth-child(5) > input:nth-child(2)")))
+            telefono.clear()
+            telefono.send_keys('1234567')
+
+            correo = wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, "#edit-form > div:nth-child(2) > div:nth-child(6) > input:nth-child(2)")))
+            correo.clear()
+            correo.send_keys('jd.patino1@uniandes.edu.co')
+
+            botonEdicion = wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, "#edit-form > div:nth-child(3) > button:nth-child(1)")))
+            botonEdicion.click()
+
+            self.browser.get('http://localhost:8000/detail')
+            h2 = self.browser.find_element(By.XPATH, '//h2[text()="David Rodriguez"]')
+
+            self.assertIn('David Rodriguez', h2.text)

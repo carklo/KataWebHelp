@@ -34,27 +34,27 @@ class Comentario(models.Model):
 
 class TrabajadorForm(ModelForm):
     nombre = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese sus nombres'})
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese sus nombres', 'name': 'id_nombre'})
     )
     apellidos = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese sus apellidos'})
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese sus apellidos', 'name':'id_apellidos'})
     )
     aniosExperiencia = forms.IntegerField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad de años de experiencia'}),
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad de años de experiencia', 'name':'id_aniosExperiencia'}),
         label='Años De Experiencia'
     )
     tiposDeServicio = forms.ModelChoiceField(
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control', 'name':'id_tiposDeServicio'}),
         queryset=TiposDeServicio.objects.all(),
         empty_label='Seleccione el tipo de servicio que ofrecerá',
         label='Tipo De Servicio'
     )
     telefono = forms.IntegerField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número telefónico'}),
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número telefónico', 'name':'id_telefono'}),
         label='Teléfono'
     )
     correo = forms.CharField(
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico', 'name':'id_correo'}),
         label='Correo'
     )
 

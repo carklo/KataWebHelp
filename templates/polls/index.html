@@ -30,7 +30,7 @@
 <ul class="nav navbar-nav navbar-right" style="padding-right: 20px">
     {% if user.is_authenticated %}
 
-            <li><a href="{% url 'polls:editar' idTrabajador=user.id %}" id="id_editar"><span class="glyphicon glyphicon-user"></span> Editar</a></li>
+            <li><a href="#" id="id_editar"><span class="glyphicon glyphicon-user"></span> Editar</a></li>
     <li>
             <a href="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
         </li>
@@ -98,15 +98,21 @@
 {% endif %}
 {% include "polls/registro.html" %}
 {% include "polls/login.html" %}
+{% include "polls/editar.html" %}
 <!--suppress JSUnresolvedFunction -->
 <script>
+
     $(document).ready(function () {
+
         $('#id_login').click(function () {
             $('#login_modal').modal();
         });
         $('#id_register').click(function () {
             $('#register_modal').modal();
         });
+        $('#id_editar').click(function () {
+            $('#edit_modal').modal()
+        })
 
         $('.trabajador').click(function () {
             var trabajador = $(this).data("form");
