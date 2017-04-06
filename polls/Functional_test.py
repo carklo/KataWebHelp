@@ -10,8 +10,8 @@ class FunctionalTest (TestCase):
 
 
     def setUp(self):
-        self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
-        #self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
+        #self.browser = webdriver.Firefox(executable_path=r'C:\Users\santi\PycharmProjects\KataWebHelp\geckodriver.exe')
+        self.browser = webdriver.Firefox(executable_path=r'..\geckodriver.exe')
         self.browser.implicitly_wait(2)
         self.browser._is_remote = False
 
@@ -98,6 +98,7 @@ class FunctionalTest (TestCase):
 
         self.assertIn('Juan Daniel Arevalo', span.text)
 
+    @skip('')
     def test_edicion_independiente(self):
 
         self.browser.get('http://localhost:8000')
@@ -160,3 +161,48 @@ class FunctionalTest (TestCase):
             h2 = self.browser.find_element(By.XPATH, '//h2[text()="David Rodriguez"]')
 
             self.assertIn('David Rodriguez', h2.text)
+
+    def test_comentarios_independiente(self):
+
+        self.browser.get('http://localhost:8000')
+
+        link = self.browser.find_element_by_id('id_login')
+        link.click()
+
+        wait = WebDriverWait(self.browser, 5)
+
+        user = wait.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#login-form > div:nth-child(2) > div:nth-child(1) > input:nth-child(2)")))
+        user.clear()
+        user.send_keys('juan645')
+
+        clave = wait.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#login-form > div:nth-child(2) > div:nth-child(2) > input:nth-child(2)")))
+        clave.clear()
+        clave.send_keys('clave123')
+
+        botonLogin = self.browser.find_element_by_id('id_log')
+        botonLogin.click()
+        sleep(3)
+        self.browser.get('http://localhost:8000/detail')
+        sleep(3)
+        wait = WebDriverWait(self.browser, 5)
+
+        user = wait.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#correo")))
+        user.clear()
+        user.send_keys('correo@correo.com')
+
+        clave = wait.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#comentario")))
+        clave.clear()
+        clave.send_keys('comentario')
+
+        botonCom = wait.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "body > div:nth-child(2) > div > form > button")))
+        botonCom.click()
+
+        sleep(3)
+        h4 = self.browser.find_element(By.XPATH, '//h4[text()="correo@correo.com"]')
+
+        self.assertIn('correo@correo.com', h4.text)
